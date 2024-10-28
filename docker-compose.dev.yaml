@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  lab3-api:
+    container_name: lab3_api
+    image: lab3_api-aspnet:latest
+    build:
+      context: .
+      dockerfile: ./Lab03_IdetityAjax_ASP.NETCoreWebAPI/Dockerfile
+    networks:
+      - lab3-api-networks
+    ports:
+      - 8080:80
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=Server=sql-server;Database=Lab3PRN231;User Id=sa;Password=DefaultPassword123123***;Encrypt=True;TrustServerCertificate=True  # Update with your database name and password
+    restart: always
+
+  sql-server:
+    container_name: sql_server_lab3
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    networks:
+      - lab3-api-networks
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=DefaultPassword123123***
+      - MSSQL_DATABASE=Lab3PRN231
+    # ports:
+    #   - 1433:1433
+    restart: always
+
+networks:
+  lab3-api-networks:
+    name: lab3_api_networks

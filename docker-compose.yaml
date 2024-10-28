@@ -1,0 +1,7 @@
+services:
+  lab3-api:
+    container_name: lab3_api
+    image: anataarisa/lab3_api-aspnet:latest
+    build:
+      context: .
+      dockerfile: ./Lab03_IdetityAjax_ASP.NETCoreWebAPI/Dockerfile

@@ -1,0 +1,17 @@
+services:
+  lab3-api:
+    container_name: lab3_api
+    image: anataarisa/lab3_api-aspnet:latest
+    networks:
+      lab3-api-networks:
+    ports:
+      - 8080:80
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Production
+    restart: always
+
+networks:
+  lab3-api-networks:
+    name: lab3_api_networks
+    external: true
