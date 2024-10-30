@@ -65,7 +65,8 @@ public class ProductService(BaseRepository<Product, ProductDBContext> productRep
             {
                 ProductName = productRequest.ProductName,
                 UnitPrice = productRequest.UnitPrice,
-                UnitsInStock = productRequest.UnitsInStock
+                UnitsInStock = productRequest.UnitsInStock,
+                CategoryId = productRequest.CategoryId
             };
 
             await productRepo.AddAsync(product);
@@ -94,7 +95,7 @@ public class ProductService(BaseRepository<Product, ProductDBContext> productRep
             product.ProductName = productRequest.ProductName;
             product.UnitPrice = productRequest.UnitPrice;
             product.UnitsInStock = productRequest.UnitsInStock;
-
+            product.CategoryId = productRequest.CategoryId;
             await productRepo.UpdateAsync(product);
             var productResponse = new ProductResponse()
             {
