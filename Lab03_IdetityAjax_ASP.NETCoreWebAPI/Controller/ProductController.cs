@@ -23,7 +23,7 @@ public class ProductController(ProductService productService) : ControllerBase
         var response = await productService.GetByIdAsync(id);
         if (response.StatusCode == 404)
         {
-            return NotFound(response.Message);
+            return NotFound(response);
         }
 
         return Ok(response);
@@ -32,10 +32,16 @@ public class ProductController(ProductService productService) : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ResponseEntity<ProductResponse>>> AddProduct([FromBody] ProductRequest productRequest)
     {
+        if (ModelState.IsValid)
+        {
+            return BadRequest(ResponseEntity<ProductResponse>.BadRequest(string.Join(", ", ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage))));
+        }
         var response = await productService.AddAsync(productRequest);
         if (response.StatusCode == 500)
         {
-            return StatusCode(500, response.Message);
+            return StatusCode(500, response);
         }
 
         return CreatedAtAction(nameof(GetById), new { id = response.Data.ProductId }, response);
@@ -44,15 +50,21 @@ public class ProductController(ProductService productService) : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<ResponseEntity<ProductResponse>>> UpdateProduct(int id, [FromBody] ProductRequest productRequest)
     {
+        if (ModelState.IsValid)
+        {
+            return BadRequest(ResponseEntity<ProductResponse>.BadRequest(string.Join(", ", ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage))));
+        }
         var response = await productService.UpdateAsync(id, productRequest);
         if (response.StatusCode == 404)
         {
-            return NotFound(response.Message);
+            return NotFound(response);
         }
 
         if (response.StatusCode == 500)
         {
-            return StatusCode(500, response.Message);
+            return StatusCode(500, response);
         }
 
         return Ok(response);
@@ -64,14 +76,14 @@ public class ProductController(ProductService productService) : ControllerBase
         var response = await productService.DeleteAsync(id);
         if (response.StatusCode == 404)
         {
-            return NotFound(response.Message);
+            return NotFound(response);
         }
 
         if (response.StatusCode == 500)
         {
-            return StatusCode(500, response.Message);
+            return StatusCode(500, response);
         }
 
-        return NoContent();
+        return Ok(response);
     }
 }
