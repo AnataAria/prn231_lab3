@@ -28,6 +28,7 @@ public class ProductRequest
     public string? ProductName { get; set; }
 
     [Required(ErrorMessage = "Category ID is required.")]
+    [Range(1, int.MaxValue, ErrorMessage = "Category ID must be more than 1")]
     public int CategoryId { get; set; }
 
     [Range(0, int.MaxValue, ErrorMessage = "Units in stock must be a non-negative integer.")]

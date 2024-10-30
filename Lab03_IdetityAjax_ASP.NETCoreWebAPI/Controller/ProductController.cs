@@ -32,7 +32,7 @@ public class ProductController(ProductService productService) : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ResponseEntity<ProductResponse>>> AddProduct([FromBody] ProductRequest productRequest)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest(ResponseEntity<ProductResponse>.BadRequest(string.Join(", ", ModelState.Values
                 .SelectMany(v => v.Errors)
@@ -50,7 +50,7 @@ public class ProductController(ProductService productService) : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<ResponseEntity<ProductResponse>>> UpdateProduct(int id, [FromBody] ProductRequest productRequest)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
             return BadRequest(ResponseEntity<ProductResponse>.BadRequest(string.Join(", ", ModelState.Values
                 .SelectMany(v => v.Errors)
